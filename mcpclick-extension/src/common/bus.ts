@@ -1,6 +1,6 @@
 // Tiny pub/sub across contexts via runtime messaging
 
-type Payload = any;
+type Payload = object | undefined;
 
 type Handler = (payload: Payload) => void | Promise<void>;
 
@@ -16,9 +16,9 @@ export const bus = {
   },
   emit: (topic: string, payload?: Payload) => {
     chrome.runtime.sendMessage({ topic: key(topic), payload });
-  }
+  },
 };
 
-export function post(topic: string, payload?: Payload) { bus.emit(topic, payload); }
-
-
+export function post(topic: string, payload?: Payload) {
+  bus.emit(topic, payload);
+}

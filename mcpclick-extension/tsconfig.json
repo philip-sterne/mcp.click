@@ -7,9 +7,8 @@
     "strict": true,
     "sourceMap": true,
     "skipLibCheck": true,
-    "types": ["chrome"]
+    "types": ["chrome", "jest", "node"],
+    "esModuleInterop": true
   },
   "include": ["src", "manifest.json"]
 }
-
-

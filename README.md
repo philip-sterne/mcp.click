@@ -25,7 +25,7 @@ This repo contains multiple dev projects:
 	•	Anti‑CSRF fields (names/locations), Set‑Cookie metadata without values.
 
 2.2 DOM & interaction capture
-	•	Page identity: document.title, canonical URL, <h1>, breadcrumb text, visible app shell labels (side‑nav items).
+	•	Page identity: document.title, canonical URL, &lt;h1&gt;, breadcrumb text, visible app shell labels (side‑nav items).
 	•	Element interactions:
 	•	On click/submit: text (innerText, aria-label), role, form label/field pairs, and DOM path (stable CSS/XPath or best‑effort semantic locator).
 	•	Associate interaction → subsequent network calls within Δt = 200 ms (configurable) using a per‑tab event clock.

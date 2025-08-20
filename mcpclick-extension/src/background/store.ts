@@ -1,40 +1,51 @@
-import { openDB, IDBPDatabase } from "idb";
+import { openDB, IDBPDatabase, DBSchema } from 'idb';
 
-type Trace = any;
-
-type DBSchema = {
-  traces: Trace;
-  actions: any;
-};
+interface MCPDBSchema extends DBSchema {
+  traces: {
+    key: number;
+    value: object;
+  };
+  actions: {
+    key: string;
+    value: object;
+  };
+}
 
 export class Store {
-  private dbp: Promise<IDBPDatabase<any>>;
+  private dbp: Promise<IDBPDatabase<MCPDBSchema>>;
 
   constructor() {
-    this.dbp = openDB("mcpclick", 1, {
+    this.dbp = openDB<MCPDBSchema>('mcpclick', 1, {
       upgrade(db) {
-        db.createObjectStore("traces", { keyPath: "_id", autoIncrement: true });
-        db.createObjectStore("actions", { keyPath: "name" });
-      }
+        db.createObjectStore('traces', { keyPath: '_id', autoIncrement: true });
+        db.createObjectStore('actions', { keyPath: 'name' });
+      },
     });
   }
 
-  async addTrace(t: Trace) {
-    const db = await this.dbp; await db.add("traces", t);
-  }
-
-  async getAllTraces(): Promise<Trace[]> {
-    const db = await this.dbp; return await db.getAll("traces");
-  }
-
-  async clearTraces() { const db = await this.dbp; await db.clear("traces"); }
-
-  async saveActionsDraft(actions: any[]) {
+  async addTrace(t: object) {
+    const { logTraces } = await chrome.storage.sync.get({ logTraces: false });
+    if (logTraces) {
+      console.log('Trace added:', t);
+    }
     const db = await this.dbp;
-    const tx = db.transaction("actions", "readwrite");
+    await db.add('traces', t);
+  }
+
+  async getAllTraces(): Promise<object[]> {
+    const db = await this.dbp;
+    return await db.getAll('traces');
+  }
+
+  async clearTraces() {
+    const db = await this.dbp;
+    await db.clear('traces');
+  }
+
+  async saveActionsDraft(actions: object[]) {
+    const db = await this.dbp;
+    const tx = db.transaction('actions', 'readwrite');
     for (const a of actions) await tx.store.put(a);
     await tx.done;
   }
 }
-
-
