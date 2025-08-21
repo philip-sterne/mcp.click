@@ -41,6 +41,10 @@ document
   .getElementById('prepare')!
   .addEventListener('click', () => bus.emit('prepare:run'));
 
+document
+  .getElementById('upload')!
+  .addEventListener('click', () => bus.emit('traces:upload'));
+
 document.getElementById('connect')!.addEventListener('click', async () => {
   const { relayUrl, deviceToken } = await chrome.storage.sync.get({
     relayUrl: 'wss://relay.mcpclick.dev/ws',

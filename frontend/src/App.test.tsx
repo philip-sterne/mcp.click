@@ -10,8 +10,16 @@ global.fetch = vi.fn((url) =>
       if (url === '/api/health') {
         return Promise.resolve({ status: 'ok' });
       }
-      if (url === '/api/items') {
-        return Promise.resolve([{ id: 1, name: 'Test Item' }]);
+      if (url === '/api/traces') {
+        return Promise.resolve([
+          {
+            id: 1,
+            kind: 'request',
+            ts: 1678886400000,
+            url: 'https://example.com',
+            method: 'GET',
+          },
+        ]);
       }
       return Promise.resolve({});
     },
@@ -30,7 +38,7 @@ describe('App', () => {
     const healthStatus = await screen.findByText(/Backend Health: ok/i);
     expect(healthStatus).toBeInTheDocument();
 
-    const item = await screen.findByText(/Test Item/i);
-    expect(item).toBeInTheDocument();
+    const traceUrl = await screen.findByText(/https:\/\/example.com/i);
+    expect(traceUrl).toBeInTheDocument();
   });
 });

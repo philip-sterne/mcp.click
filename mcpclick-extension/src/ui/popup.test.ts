@@ -8,6 +8,7 @@ document.body.innerHTML = `
     <button id="start"></button>
     <button id="stop"></button>
     <button id="prepare"></button>
+    <button id="upload"></button>
     <button id="connect"></button>
   </div>
 `;
